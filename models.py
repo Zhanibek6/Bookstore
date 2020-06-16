@@ -12,7 +12,7 @@ class Book(db.Model):
     title = db.Column(db.String, nullable=False)
     author = db.Column(db.String, nullable=False)
     publication_year = db.Column(db.Integer, nullable=False)
-    isbn = db.Column(db.Integer, nullable=False)
+    isbn = db.Column(db.String, nullable=False)
 
 
 class User(db.Model):

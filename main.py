@@ -38,5 +38,8 @@ def menu():
 
 @app.route("/results")
 def results(search):
-	books = Book.query.all() 
-
+	if isintance(search, int):
+		books = db.execute(f"SELECT * FROM books WHERE {search} IN (publication_year);").all()
+	else:
+		books = db.execute(f"SELECT * FROM books WHERE {search} IN (title, author, isbn);").all()
+	return render_template("results.html", books=books)
