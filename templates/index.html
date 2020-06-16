@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Books
+{% endblock %}
+
+{% block body %}
+    <h1>Register</h1>
+
+    <form action="{{ url_for('menu') }}" method="post">
+        <!--
+        <div class="form-group">
+            <select class="form-control" name="flight_id">
+                {% for book in books %}
+                    <option value="{{ flight.id }}">{{ flight.origin }} to {{ flight.destination }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        -->
+
+        <select class="form-control" name="option">
+            <option value="login">Login</option>
+            <option value="register">Resgister</option>
+        </select>
+
+        <div class="form-group">
+            <input class="form-control" name="name" placeholder="Username">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password">
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary">Register</button>
+        </div>
+
+    </form>
+{% endblock %}
