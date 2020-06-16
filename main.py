@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request
+from sqlalchemy import or_
 from models import *
 
 
@@ -10,8 +11,7 @@ db.init_app(app)
 
 @app.route("/")
 def index():
-    books = Book.query.all()
-    return render_template("index.html", books=books)
+    return render_template("index.html")
 
 
 @app.route("/menu", methods=["POST"])
@@ -36,10 +36,23 @@ def menu():
 		return render_template("index.html")
 
 
-@app.route("/results")
-def results(search):
-	if isintance(search, int):
-		books = db.execute(f"SELECT * FROM books WHERE {search} IN (publication_year);").all()
+@app.route("/results", methods=["POST"])
+def results():
+	search = request.form.get("search")
+	if isinstance(search, int):
+		books = Book.query.filter(Book.publication_year.like(f'{search}%'))
 	else:
-		books = db.execute(f"SELECT * FROM books WHERE {search} IN (title, author, isbn);").all()
+		books = Book.query.filter(or_(Book.title.like(f'%{search}%'), Book.author.like(f'%{search}%'), Book.isbn.like(f'%{search}%')))
+	if books is None:
+		return render_template("error.html", message="No books found")
+		
 	return render_template("results.html", books=books)
+
+
+@app.route("/results/<int:book_id>")
+def book(book_id):
+	book = Book.query.get(book_id)
+	if book is None:
+		return render_template("error.html", message="There's no such a book")
+
+	return render_template("book.html", book=book)
