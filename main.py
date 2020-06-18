@@ -14,6 +14,15 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/logout")
+def logout():
+	if session['user'] is not None:
+		session['user'] = None
+		return render_template("index.html")
+	else:
+		return render_template("error.html", message="No user is currently logged in")
+
+
 @app.route("/menu", methods=["POST"])
 def menu():
 
@@ -51,8 +60,23 @@ def results():
 
 @app.route("/results/<int:book_id>")
 def book(book_id):
+	'''
 	book = Book.query.get(book_id)
 	if book is None:
 		return render_template("error.html", message="There's no such a book")
-
+	reviews = Book.reviews
+	'''
 	return render_template("book.html", book=book)
+
+@app.route("/reviews/<isbn>", methods=["POST"])
+def reviews(isbn):
+	rating = request.form.get("rating")
+	review = request.form.get("comment")
+	isbn = request.form.get("isbn")
+	user = session['user']
+	#book_id = request.form.get("id")
+	book  = Book.query.filter_by(isbn=isbn).first()
+	if not book:
+		return render_template("error.html", message=f"Couldn't find a book")
+	book.addReview(username=user, rating=rating, text=review)
+	return	render_template("book.html", book=book)
