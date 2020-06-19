@@ -10,4 +10,9 @@
             {% endblock %}
         </div>
     </body>
+    <footer>
+        <form action="{{ url_for('logout') }}" method="post">
+            <button class="btn btn-primary">Logout</button>
+        </form>
+    </footer>
 </html>

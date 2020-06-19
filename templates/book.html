@@ -14,7 +14,7 @@
         <li name="isbn">ISBN: {{ book.isbn }}</li>
     </ul>
 
-    <form action="{{ url_for('reviews', isbn=book.isbn) }}" method="post">
+    <form action="{{ url_for('reviews') }}" method="post">
     	<select class="form-control" name="rating">
     		<option value="5">5</option>
     		<option value="4">4</option>
