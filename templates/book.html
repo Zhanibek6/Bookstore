@@ -12,9 +12,10 @@
         <li>Author: {{ book.author }}</li>
         <li>Published: {{ book.publication_year }}</li>
         <li name="isbn">ISBN: {{ book.isbn }}</li>
+        <li>Book Id in database: {{ book.id }}</li>
     </ul>
 
-    <form action="{{ url_for('reviews') }}" method="post">
+    <form action="{{ url_for('testing', book_id=book.id) }}" method="post">
     	<select class="form-control" name="rating">
     		<option value="5">5</option>
     		<option value="4">4</option>

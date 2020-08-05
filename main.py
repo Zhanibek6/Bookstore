@@ -4,10 +4,11 @@ from models import *
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://dgpohzutvnfioc:b66825f5296b8648d10b630f565dd0bc9d31b99ec0250686b743b59460d80157@ec2-54-217-224-85.eu-west-1.compute.amazonaws.com:5432/d7kd8qe1q0i3h1" #os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] =  os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+app.secret_key = 'Your secret key here'
+
 
 @app.route("/")
 def index():
@@ -58,15 +59,10 @@ def results():
 	return render_template("results.html", books=books)
 
 
-@app.route("/results/<int:book_id>")
+@app.route("/results/<int:book_id>", methods=["POST"])
 def book(book_id):
-	'''
-	book = Book.query.get(book_id)
-	if book is None:
-		return render_template("error.html", message="There's no such a book")
-	reviews = Book.reviews
-	'''
 	return render_template("book.html", book=book)
+
 
 @app.route("/success", methods=["POST"])
 def reviews():
